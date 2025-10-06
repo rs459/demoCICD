@@ -20,10 +20,13 @@ WORKDIR /var/www/html
 
 # Copier les fichiers Composer et installer les dépendances pour tirer parti du cache de calques
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copier le reste des fichiers de l'application
 COPY . .
+
+# Exécuter les scripts Composer maintenant que tous les fichiers sont présents
+RUN composer run-script post-install-cmd
 
 # Donner les droits d'accès à l'utilisateur Apache
 RUN chown -R www-data:www-data /var/www/html
