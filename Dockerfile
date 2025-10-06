@@ -9,11 +9,8 @@ RUN apt-get update && apt-get install -y \
 # Activer mod_rewrite pour Symfony
 RUN a2enmod rewrite
 
-# Copier la configuration Apache personnalisée
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
-
 # Installer Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
@@ -27,6 +24,9 @@ COPY . .
 
 # Exécuter les scripts Composer maintenant que tous les fichiers sont présents
 RUN composer run-script post-install-cmd
+
+# Copier la configuration Apache personnalisée
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Donner les droits d'accès à l'utilisateur Apache
 RUN chown -R www-data:www-data /var/www/html
