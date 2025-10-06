@@ -9,6 +9,9 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
 # Activer mod_rewrite pour Symfony
 RUN a2enmod rewrite
 
+# Configurer le DocumentRoot pour pointer vers le dossier public de Symfony
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -19,7 +22,7 @@ COPY . .
 # Installer les dépendances Symfony (mode prod)
 RUN composer install --no-dev --optimize-autoloader
 
-# Donner les droits d'accès aux dossiers var/cache et var/log
-RUN chown -R www-data:www-data /var/www/html/var
+# Donner les droits d'accès à l'utilisateur Apache
+RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
