@@ -30,4 +30,4 @@ jobs:
                   composer install --prefer-dist --no-progress --no-suggest --no-interaction
             - name: Run tests
               run: |
-                  php bin/phpunit --tesdox
+                  php bin/phpunit --testdox
