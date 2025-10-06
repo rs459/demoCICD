@@ -47,8 +47,8 @@ jobs:
 
             - name: Build Docker image
               run: |
-                  docker build -t demoCICD .
-                    docker tag demoCICD ${{ secrets.DOCKER_USERNAME }}/democicd:latest
+                  docker build -t democicd .
+                  docker tag democicd ${{ secrets.DOCKER_USERNAME }}/democicd:latest
 
             - name: Push Docker image
               run: |
